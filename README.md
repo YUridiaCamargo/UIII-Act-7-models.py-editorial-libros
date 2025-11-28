@@ -1,6 +1,7 @@
 # UIII-Act-7-models.py-editorial-libros
 Sistema de Gestión de Editorial (Libros)
-<img width="1174" height="769" alt="image" src="https://github.com/user-attachments/assets/1e95d424-b3c2-446e-8202-2439ebbe9df4" />
+<img width="1710" height="826" alt="image" src="https://github.com/user-attachments/assets/d5fe3674-377f-4d79-9533-701602a7f97a" />
+
 
 
 
