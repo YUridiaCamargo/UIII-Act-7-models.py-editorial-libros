@@ -7,118 +7,107 @@ Sistema de Gestión de Editorial (Libros)
 
 ---
 
-# ✅ **models.py (Django)**
-
-```python
 from django.db import models
 
-
-class AutorEditorial(models.Model):
-    id_autor = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
-    nacionalidad = models.CharField(max_length=50)
-    fecha_nacimiento = models.DateField()
-    biografia = models.TextField()
-    email = models.CharField(max_length=100)
-    sitio_web = models.CharField(max_length=255, blank=True, null=True)
-    fecha_fallecimiento = models.DateField(blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.nombre} {self.apellido}"
-
-
-class GeneroLiterario(models.Model):
-    id_genero = models.AutoField(primary_key=True)
-    nombre_genero = models.CharField(max_length=50)
-    descripcion = models.TextField()
-    es_ficcion = models.BooleanField()
-    epoca_popular = models.CharField(max_length=50)
-    publico_objetivo = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.nombre_genero
-
-
-class Editor(models.Model):
-    id_editor = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    telefono = models.CharField(max_length=20)
-    fecha_contratacion = models.DateField()
-    salario = models.DecimalField(max_digits=10, decimal_places=2)
-    especialidad_genero = models.CharField(max_length=100)
-    departamento = models.CharField(max_length=50)
-    dni = models.CharField(max_length=20)
-
-    def __str__(self):
-        return f"{self.nombre} {self.apellido}"
-
-
-class LibroEditorial(models.Model):
-    id_libro = models.AutoField(primary_key=True)
-    titulo = models.CharField(max_length=255)
-    autor_principal = models.ForeignKey(AutorEditorial, on_delete=models.CASCADE)
-    isbn = models.CharField(max_length=13)
-    fecha_publicacion = models.DateField()
-    num_paginas = models.IntegerField()
-    genero = models.ForeignKey(GeneroLiterario, on_delete=models.CASCADE)
-    precio_tapa = models.DecimalField(max_digits=10, decimal_places=2)
-    stock_almacen = models.IntegerField()
-    editor = models.ForeignKey(Editor, on_delete=models.CASCADE)
-    estado_publicacion = models.CharField(max_length=50)
-    formato = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.titulo
-
-
-class Distribuidor(models.Model):
-    id_distribuidor = models.AutoField(primary_key=True)
-    nombre_distribuidor = models.CharField(max_length=100)
+class Cliente_Limpieza(models.Model):
+    id_cliente = models.AutoField(primary_key=True)
+    nombre_empresa = models.CharField(max_length=255)
     contacto_principal = models.CharField(max_length=100)
+    email_contacto = models.EmailField(max_length=100)
+    telefono_contacto = models.CharField(max_length=20)
+    direccion_servicio = models.CharField(max_length=255)
+    tipo_negocio = models.CharField(max_length=100)
+    fecha_inicio_contrato = models.DateField()
+    estado_contrato = models.CharField(max_length=50)
+    frecuencia_servicio = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.nombre_empresa
+
+
+class Servicio_Limpieza(models.Model):
+    id_servicio = models.AutoField(primary_key=True)
+    nombre_servicio = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    costo_estandar = models.DecimalField(max_digits=10, decimal_places=2)
+    duracion_estimada_horas = models.IntegerField()
+    productos_usados = models.TextField()
+    requiere_equipo_especial = models.BooleanField(default=False)
+    categoria_servicio = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.nombre_servicio
+
+
+class Empleado_Limpieza(models.Model):
+    id_empleado = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=100)
+    apellido = models.CharField(max_length=100)
+    dni = models.CharField(max_length=20, unique=True)
+    fecha_contratacion = models.DateField()
+    salario_hora = models.DecimalField(max_digits=5, decimal_places=2)
+    turno = models.CharField(max_length=50)
     telefono = models.CharField(max_length=20)
-    email = models.CharField(max_length=100)
-    direccion_almacen = models.CharField(max_length=255)
-    pais_distribucion = models.CharField(max_length=50)
-    tipo_distribucion = models.CharField(max_length=50)
+    email = models.EmailField(max_length=100)
+    certificaciones_seguridad = models.TextField(blank=True)
 
     def __str__(self):
-        return self.nombre_distribuidor
+        return f"{self.nombre} {self.apellido}"
 
 
-class EnvioLibros(models.Model):
-    id_envio = models.AutoField(primary_key=True)
-    libro = models.ForeignKey(LibroEditorial, on_delete=models.CASCADE)
-    distribuidor = models.ForeignKey(Distribuidor, on_delete=models.CASCADE)
-    fecha_envio = models.DateTimeField()
-    cantidad_enviada = models.IntegerField()
-    costo_envio = models.DecimalField(max_digits=10, decimal_places=2)
-    estado_envio = models.CharField(max_length=50)
-    fecha_recepcion_esperada = models.DateField()
-    numero_seguimiento = models.CharField(max_length=50)
-
-    def __str__(self):
-        return f"Envío {self.id_envio} - {self.libro.titulo}"
-
-
-class ContratoAutor(models.Model):
-    id_contrato = models.AutoField(primary_key=True)
-    libro = models.ForeignKey(LibroEditorial, on_delete=models.CASCADE)
-    autor_principal = models.ForeignKey(AutorEditorial, on_delete=models.CASCADE)
-    fecha_firma = models.DateField()
-    porcentaje_regalias = models.DecimalField(max_digits=5, decimal_places=2)
-    monto_adelanto = models.DecimalField(max_digits=10, decimal_places=2)
-    fecha_fin_contrato = models.DateField()
-    clausulas_especiales = models.TextField()
-    id_agente_literario = models.IntegerField()
+class Programacion_Servicio(models.Model):
+    id_programacion = models.AutoField(primary_key=True)
+    id_cliente = models.ForeignKey(Cliente_Limpieza, on_delete=models.CASCADE)
+    id_servicio = models.ForeignKey(Servicio_Limpieza, on_delete=models.CASCADE)
+    fecha_programada = models.DateTimeField()
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+    estado_servicio = models.CharField(max_length=50)
+    observaciones_cliente = models.TextField(blank=True)
+    id_empleado_asignado = models.ForeignKey(Empleado_Limpieza, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f"Contrato {self.id_contrato} - {self.autor_principal}"
-```
+        return f"Servicio {self.id_programacion} - {self.id_cliente.nombre_empresa}"
 
----
 
-¿Deseas alguna de estas opciones?
+class Factura_Limpieza(models.Model):
+    id_factura = models.AutoField(primary_key=True)
+    id_cliente = models.ForeignKey(Cliente_Limpieza, on_delete=models.CASCADE)
+    fecha_emision = models.DateField()
+    monto_total = models.DecimalField(max_digits=10, decimal_places=2)
+    estado_pago = models.CharField(max_length=50)
+    metodo_pago = models.CharField(max_length=50)
+    fecha_vencimiento = models.DateField()
+    id_programacion_asociada = models.ForeignKey(Programacion_Servicio, on_delete=models.SET_NULL, null=True)
+    impuestos_aplicados = models.DecimalField(max_digits=5, decimal_places=2)
 
+    def __str__(self):
+        return f"Factura #{self.id_factura}"
+
+
+class Material_Limpieza(models.Model):
+    id_material = models.AutoField(primary_key=True)
+    nombre_material = models.CharField(max_length=255)
+    descripcion = models.TextField()
+    stock_actual = models.IntegerField()
+    fecha_caducidad = models.DateField()
+    id_proveedor = models.IntegerField()  # No se especificó modelo proveedor
+    costo_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+    tipo_material = models.CharField(max_length=50)
+    ubicacion_almacen = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre_material
+
+
+class Uso_Material(models.Model):
+    id_uso = models.AutoField(primary_key=True)
+    id_programacion = models.ForeignKey(Programacion_Servicio, on_delete=models.CASCADE)
+    id_material = models.ForeignKey(Material_Limpieza, on_delete=models.CASCADE)
+    cantidad_usada = models.DecimalField(max_digits=8, decimal_places=2)
+    fecha_registro = models.DateTimeField()
+    id_empleado_registro = models.ForeignKey(Empleado_Limpieza, on_delete=models.SET_NULL, null=True)
+    comentarios_uso = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"Uso #{self.id_uso}"
