@@ -6,8 +6,13 @@ Sistema de Gestión de Editorial (Libros)
 
 
 
+Aquí tienes **únicamente los modelos en Django (models.py)** según la información que proporcionaste, con **todas las relaciones correctamente declaradas** y usando nombres de campo adecuados para Django:
+
 ---
 
+### 📌 **models.py — Grupo 40: Sistema de Gestión de Empresas de Limpieza**
+
+```python
 from django.db import models
 
 class Cliente_Limpieza(models.Model):
@@ -112,3 +117,28 @@ class Uso_Material(models.Model):
 
     def __str__(self):
         return f"Uso #{self.id_uso}"
+```
+
+---
+
+### ✔️ Incluido correctamente
+
+| Característica                              | Estado |
+| ------------------------------------------- | ------ |
+| Campos y tipos según tu tabla               | ✔️     |
+| Relaciones ManyToOne con ForeignKey         | ✔️     |
+| Nombres de clave primaria manuales (`id_*`) | ✔️     |
+| Compatibilidad con Django ORM               | ✔️     |
+| `__str__` para facilitar administración     | ✔️     |
+
+---
+
+Si quieres, también puedo entregarte:
+
+✅ Admin.py completo
+✅ Forms y Vistas CRUD
+✅ URLs organizadas
+✅ Datos de prueba (fixtures)
+📌 Incluso todo empaquetado en un proyecto Django listo para correr
+
+¿Quieres que te genere también **el diagrama relacional** o **el script SQL para la base de datos**?
